@@ -1,5 +1,7 @@
+com\sales\api\dto\CreateOrderResponse.class
 com\sales\api\dto\ProductResponseDto$ProductResponseDtoBuilder.class
 com\sales\api\model\Order.class
+com\sales\api\utils\exception\ProcessingException.class
 com\sales\api\dto\OrderResponseDto.class
 com\sales\api\service\services\ProductService.class
 com\sales\api\model\Product.class
@@ -13,14 +15,18 @@ com\sales\api\controller\ProductController.class
 com\sales\api\service\repositories\OrderRepository.class
 com\sales\api\dto\ProductResponseDto.class
 com\sales\api\utils\exception\AbstractException.class
+com\sales\api\dto\CreateOrderResponse$CreateOrderResponseBuilder.class
 com\sales\api\dto\OrderRequestDto$OrderRequestDtoBuilder.class
 com\sales\api\dto\ProductRequestDto$ProductRequestDtoBuilder.class
+com\sales\api\utils\RestUtil.class
+com\sales\api\utils\RestTemplateResponseErrorHandler.class
 com\sales\api\utils\CustomWebMvcAutoConfig.class
 com\sales\api\model\CoreEntity.class
 com\sales\api\utils\exception\BadRequestException.class
 com\sales\api\utils\Utility.class
 com\sales\api\service\repositories\ProductRepository.class
 com\sales\api\model\Product$ProductBuilder.class
+com\sales\api\utils\API.class
 com\sales\api\SalesApiApplication.class
 com\sales\api\dto\OrderRequestDto.class
 com\sales\api\dto\OrderResponseDto$OrderResponseDtoBuilder.class
@@ -29,3 +35,4 @@ com\sales\api\controller\OrderController.class
 com\sales\api\utils\SwaggerConfig.class
 com\sales\api\dto\Response.class
 com\sales\api\utils\Validations.class
+com\sales\api\utils\exception\FrameWorkApiException.class

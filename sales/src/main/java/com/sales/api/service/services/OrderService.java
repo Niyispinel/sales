@@ -1,12 +1,14 @@
 package com.sales.api.service.services;
 
 import com.google.gson.Gson;
+import com.sales.api.dto.CreateOrderResponse;
 import com.sales.api.dto.OrderRequestDto;
 import com.sales.api.dto.OrderResponseDto;
 import com.sales.api.model.Order;
 import com.sales.api.model.Product;
 import com.sales.api.service.repositories.OrderRepository;
 import com.sales.api.service.repositories.ProductRepository;
+import com.sales.api.utils.API;
 import com.sales.api.utils.Validations;
 import com.sales.api.utils.exception.ConflictException;
 import com.sales.api.utils.exception.CustomResponseCode;
@@ -14,11 +16,14 @@ import com.sales.api.utils.exception.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @SuppressWarnings("ALL")
 @Service
@@ -26,6 +31,16 @@ import java.util.List;
 public class OrderService {
     private final OrderRepository orderRepository;
     private final ModelMapper mapper;
+
+    @Autowired
+    private API api;
+
+
+    @Value("${create.order}")
+    private String processOrder;
+
+    @Value("${finger.print}")
+    private String fingerPrint;
 
     @Autowired
     private Validations validations;
@@ -78,6 +93,8 @@ public class OrderService {
             });
         }
 
+        placeOrder(request);
+
         return orderResponseDto;
     }
 
@@ -118,5 +135,27 @@ public class OrderService {
         List<Product> products = productRepository.findByOrderId(orderId);
         return products;
 
+    }
+
+    public CreateOrderResponse placeOrder (OrderRequestDto request) {
+
+        Map map=new HashMap();
+        map.put("fingerprint",fingerPrint);
+        Order order = mapper.map(request,Order.class);
+
+        CreateOrderResponse response = api.post(processOrder ,order, CreateOrderResponse.class,map);
+        if (response.isStatus())
+            saveOrder(request);
+        return response;
+
+    }
+
+    private void saveOrder(OrderRequestDto request) {
+
+        Order order = mapper.map(request,Order.class);
+        log.info("validating order " + request);
+        validations.validateOrder(request);
+        log.info("::::::::::::ORDER REQUEST::::::::::::::::: " + order);
+        orderRepository.save(order);
     }
 }
